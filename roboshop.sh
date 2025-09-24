@@ -13,7 +13,7 @@ do
 #Get private IP
 if [ $instance != "frontend" ]; then 
 IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-     RECORD_NAME="$instances.$DOMIN_NAME" # mongodb.kranhi.fun
+     RECORD_NAME="$instance.$DOMIN_NAME" # mongodb.kranhi.fun
 else 
      IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
      RECORD_NAME="$DOMIN_NAME" # kranhi.fun

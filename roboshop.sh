@@ -1,7 +1,10 @@
 #!/bin/bah
 
 AMI_ID="ami-09c813fb71547fc4f"
-SG_ID="sg-069f722e1125dd734"
+SG_ID="sg-069f722e1125dd734" # eplace wwith your SD ID
+ZONE_ID="Z04572451B9X32T33PSC8" # Replace with your ID
+DOMAIN_NAME="kranthi.fun"
+
 
 for instance in $@
 do 
@@ -10,11 +13,30 @@ do
 #Get private IP
 if [ $instance != "frontend" ]; then 
 IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-
+     RECORD_NAME="$instances.$DOMIN_NAME" # mongodb.kranhi.fun
 else 
      IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-
+     RECORD_NAME="$DOMIN_NAME" # kranhi.fun
 fi
          echo "$instance: $IP"
+
+         aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment": "Updating record set"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }
+    '
 done
 

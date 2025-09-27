@@ -1,7 +1,7 @@
 #!/bin/bah
 
-AMI_ID="ami-09c813fb71547fc4f"
-SG_ID="sg-069f722e1125dd734" # eplace wwith your SD ID
+AMI_ID="ami-09c813fb71547fc4f"  #Re place with your AMI ID
+SG_ID="sg-069f722e1125dd734" # Replace wwith your SD ID
 ZONE_ID="Z04572451B9X32T33PSC8" # Replace with your ID
 DOMAIN_NAME="kranthi.fun"
 
